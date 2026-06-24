@@ -69,22 +69,28 @@ local function apply_window_highlights()
   end
 end
 
-function M.load()
+function M.available_themes()
+  return require("grayveil.palette").names()
+end
+
+function M.load(theme)
+  local selected_theme = require("grayveil.palette").get(theme)
+
   if vim.g.colors_name then
     vim.cmd("highlight clear")
   end
 
   vim.o.termguicolors = true
-  vim.o.background = "light"
+  vim.o.background = selected_theme.background
   vim.o.guicursor = table.concat({
     "n-v-c:block-Cursor",
     "i-ci-ve:ver25-Cursor",
     "r-cr:hor20-Cursor",
     "o:hor50-Cursor",
   }, ",")
-  vim.g.colors_name = "grayveil"
+  vim.g.colors_name = selected_theme.name
 
-  local palette = require("grayveil.palette").colors
+  local palette = selected_theme.colors
   local groups = require("grayveil.groups").get(palette, M.options)
 
   for group, value in pairs(groups) do

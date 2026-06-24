@@ -34,6 +34,22 @@ function M.get(c, opts)
   local bg_sidebar = transparent and c.none or c.bg_sidebar
   local bg_panel = transparent and c.none or c.bg_panel
   local bg_status = transparent and c.none or c.bg_status
+  local cursor_fg = c.cursor_fg or "#f4f7fb"
+  local diff_add_bg = c.diff_add_bg or c.selection
+  local diff_change_bg = c.diff_change_bg or c.selection
+  local diff_delete_bg = c.diff_delete_bg or c.selection
+  local diff_text_bg = c.diff_text_bg or c.selection
+  local search_fg = c.search_fg or c.fg
+  local search_bg = c.search_bg or c.selection
+  local inc_search_bg = c.inc_search_bg or search_bg
+  local substitute_fg = c.substitute_fg or c.fg
+  local substitute_bg = c.substitute_bg or search_bg
+  local dropbar_current_context = c.dropbar_current_context or c.selection
+  local dropbar_hover = c.dropbar_hover or c.bg_hover
+  local builtin = c.builtin or c.red
+  local constant = c.constant or c.purple
+  local function_builtin = c.function_builtin or c.cyan
+  local property = c.property or c.cyan
 
   return {
     Normal = hl(c.fg, bg),
@@ -52,18 +68,18 @@ function M.get(c, opts)
     GrayveilFloatBorder = hl(c.border_muted, bg_float),
     ColorColumn = hl(nil, c.line),
     Conceal = hl(c.fg_muted, bg),
-    Cursor = hl("#f4f7fb", c.cursor, { "bold" }),
-    lCursor = hl("#f4f7fb", c.cursor, { "bold" }),
-    CursorIM = hl("#f4f7fb", c.cursor, { "bold" }),
-    TermCursor = hl("#f4f7fb", c.cursor, { "bold" }),
+    Cursor = hl(cursor_fg, c.cursor, { "bold" }),
+    lCursor = hl(cursor_fg, c.cursor, { "bold" }),
+    CursorIM = hl(cursor_fg, c.cursor, { "bold" }),
+    TermCursor = hl(cursor_fg, c.cursor, { "bold" }),
     TermCursorNC = hl(c.fg_faint, c.line),
     CursorColumn = hl(nil, c.line),
     CursorLine = hl(nil, c.line),
     Directory = hl(c.blue, bg, { "bold" }),
-    DiffAdd = hl(c.green, "#c6cec8"),
-    DiffChange = hl(c.blue, "#c4c9d2"),
-    DiffDelete = hl(c.red, "#cec1c6"),
-    DiffText = hl(c.fg, "#bac1cc", { "bold" }),
+    DiffAdd = hl(c.green, diff_add_bg),
+    DiffChange = hl(c.blue, diff_change_bg),
+    DiffDelete = hl(c.red, diff_delete_bg),
+    DiffText = hl(c.fg, diff_text_bg, { "bold" }),
     EndOfBuffer = hl(c.fg_faint, bg),
     ErrorMsg = hl(c.red, bg, { "bold" }),
     VertSplit = hl(c.border_muted, bg),
@@ -71,8 +87,8 @@ function M.get(c, opts)
     Folded = hl(c.fg_muted, bg_alt),
     FoldColumn = hl(c.fg_faint, bg),
     SignColumn = hl(c.fg_faint, bg),
-    IncSearch = hl(c.fg, "#a6b2c2", { "bold" }),
-    Substitute = hl(c.fg, "#b09a8a", { "bold" }),
+    IncSearch = hl(search_fg, inc_search_bg, { "bold" }),
+    Substitute = hl(substitute_fg, substitute_bg, { "bold" }),
     LineNr = hl(c.fg_faint, bg),
     CursorLineNr = hl(c.fg, c.line, { "bold" }),
     MatchParen = hl(c.fg, c.selection, { "bold" }),
@@ -85,8 +101,8 @@ function M.get(c, opts)
     PmenuThumb = hl(nil, c.fg_faint),
     Question = hl(c.blue, bg),
     QuickFixLine = hl(c.fg, c.selection, { "bold" }),
-    Search = hl(c.fg, "#bdc3cd"),
-    CurSearch = hl(c.fg, "#a6b2c2", { "bold" }),
+    Search = hl(search_fg, search_bg),
+    CurSearch = hl(search_fg, inc_search_bg, { "bold" }),
     SpecialKey = hl(c.fg_faint, bg),
     SpellBad = hl(c.red, bg, { "undercurl" }),
     SpellCap = hl(c.blue, bg, { "undercurl" }),
@@ -159,11 +175,11 @@ function M.get(c, opts)
     ["@boolean"] = hl(c.orange, nil),
     ["@character"] = hl(c.green, nil),
     ["@comment"] = hl(c.fg_muted, nil, { "italic" }),
-    ["@constant"] = hl(c.purple, nil),
+    ["@constant"] = hl(constant, nil),
     ["@constant.builtin"] = hl(c.orange, nil),
     ["@constructor"] = hl(c.yellow, nil),
     ["@function"] = hl(c.blue, nil),
-    ["@function.builtin"] = hl(c.cyan, nil),
+    ["@function.builtin"] = hl(function_builtin, nil),
     ["@function.macro"] = hl(c.pink, nil),
     ["@function.method"] = hl(c.blue, nil),
     ["@keyword"] = hl(c.purple, nil),
@@ -179,15 +195,15 @@ function M.get(c, opts)
     ["@module"] = hl(c.yellow, nil),
     ["@number"] = hl(c.orange, nil),
     ["@operator"] = hl(c.fg_soft, nil),
-    ["@property"] = hl(c.cyan, nil),
+    ["@property"] = hl(property, nil),
     ["@punctuation"] = hl(c.fg_soft, nil),
     ["@string"] = hl(c.green, nil),
     ["@tag"] = hl(c.blue, nil),
-    ["@tag.attribute"] = hl(c.cyan, nil),
+    ["@tag.attribute"] = hl(property, nil),
     ["@type"] = hl(c.yellow, nil),
     ["@type.builtin"] = hl(c.yellow, nil),
     ["@variable"] = hl(c.fg, nil),
-    ["@variable.builtin"] = hl(c.red, nil),
+    ["@variable.builtin"] = hl(builtin, nil),
     ["@variable.parameter"] = hl(c.fg, nil),
     ["@variable.member"] = hl(c.fg_soft, nil),
 
@@ -388,10 +404,10 @@ function M.get(c, opts)
     WhichKeySeparator = hl(c.fg_faint, bg_float),
     WhichKeyFloat = hl(c.fg, bg_float),
 
-    DropBarCurrentContext = hl(c.fg, "#c2c7d0"),
-    DropBarCurrentContextIcon = hl(c.blue, "#c2c7d0"),
-    DropBarCurrentContextName = hl(c.fg, "#c2c7d0", { "bold" }),
-    DropBarHover = hl(c.fg, "#c4c9d1"),
+    DropBarCurrentContext = hl(c.fg, dropbar_current_context),
+    DropBarCurrentContextIcon = hl(c.blue, dropbar_current_context),
+    DropBarCurrentContextName = hl(c.fg, dropbar_current_context, { "bold" }),
+    DropBarHover = hl(c.fg, dropbar_hover),
     DropBarIconKindDefault = hl(c.fg_muted, nil),
     DropBarIconKindDefaultNC = hl(c.fg_faint, nil),
     DropBarIconKindFile = hl(c.blue, nil),
@@ -421,9 +437,9 @@ function M.get(c, opts)
     DropBarMenuNormalFloat = hl(c.fg, bg_float),
     DropBarMenuFloatBorder = hl(c.border_muted, bg_float),
     DropBarMenuCurrentContext = hl(c.fg, c.selection),
-    DropBarMenuHoverEntry = hl(c.fg, "#c4c9d1"),
-    DropBarMenuHoverIcon = hl(c.blue, "#c4c9d1"),
-    DropBarMenuHoverSymbol = hl(c.fg, "#c4c9d1", { "bold" }),
+    DropBarMenuHoverEntry = hl(c.fg, dropbar_hover),
+    DropBarMenuHoverIcon = hl(c.blue, dropbar_hover),
+    DropBarMenuHoverSymbol = hl(c.fg, dropbar_hover, { "bold" }),
     DropBarFzfMatch = hl(c.blue, nil, { "bold" }),
     DropBarPreview = hl(nil, c.visual),
 

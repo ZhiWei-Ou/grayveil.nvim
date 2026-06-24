@@ -4,4 +4,4 @@
 ---@email ouzw.mail@gmail.com
 ---@license Apache-2.0
 
-require("grayveil").load()
+require("grayveil").load("grayveil")
